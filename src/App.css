@@ -7,9 +7,23 @@ body {
 }
 
 .App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+main {
+  flex-grow: 1;
+  overflow-y: auto;
   padding: 20px;
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
+
+main::-webkit-scrollbar {
+    display: none;
 }
 
 a {
