@@ -1,10 +1,11 @@
 import React from 'react';
+import CompetitorList from '../components/CompetitorList';
 
 const ShuffleCup = () => {
   return (
     <div>
       <h1>Shuffle Cup - Tulokset</h1>
-      <p>Tähän tulevat Shuffle Cupin tulokset ja tiedot.</p>
+      <CompetitorList />
     </div>
   );
 };

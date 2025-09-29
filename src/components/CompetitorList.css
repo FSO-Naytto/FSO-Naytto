@@ -1,0 +1,18 @@
+input {
+    margin: 10px;
+    color: white;
+    background-color: #1f1f1f;
+}
+
+input::placeholder {
+    color: grey;
+}
+
+button {
+    background-color: #1f1f1f;
+    color: white;
+}
+
+.competitorList {
+    font-size: 20px;
+}

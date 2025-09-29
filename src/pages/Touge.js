@@ -1,13 +1,13 @@
 import React from 'react';
 import CompetitorList from '../components/CompetitorList';
 
-const ArsCup = () => {
+const Touge = () => {
   return (
     <div>
-      <h1>ARS Cup - Tulokset</h1>
+      <h1>Touge - Tulokset</h1>
       <CompetitorList />
     </div>
   );
 };
 
-export default ArsCup;
+export default Touge;
