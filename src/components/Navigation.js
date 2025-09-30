@@ -7,7 +7,7 @@ const Navigation = () => {
     <nav>
       <ul>
         <li><Link to="/info">INFO</Link></li>
-        <li><Link to="/ars-cup">ARS CUP</Link></li>
+        <li><Link to="/paasarja">Pääsarja</Link></li>
         <li><Link to="/shuffle-cup">SHUFFLE CUP</Link></li>
         <li><Link to="/touge">TOUGE</Link></li>
         <li><Link to="/hotlap-hontsa">HOTLAP & HÖNTSÄ</Link></li>

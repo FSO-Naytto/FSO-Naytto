@@ -1,11 +1,15 @@
-import React from 'react';
-import CompetitorList from '../components/CompetitorList';
+import React, { useState } from 'react';
+import Edit from "../components/Edit";
 
 const HotlapHontsa = () => {
+  const [paragraph, setParagraph] = useState("")
+
   return (
     <div>
-      <h1>Hotlap & Höntsä - Tulokset</h1>
-      <CompetitorList />
+      <Edit
+        title="Hotlap & Höntsä - Info"
+        value={paragraph}
+        onChange={setParagraph}/>
     </div>
   );
 };
