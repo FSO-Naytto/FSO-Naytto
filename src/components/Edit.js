@@ -29,13 +29,25 @@ const Edit = ( {title, value, onChange }) => {
                         value={tempValue}
                         onChange={e => setTempValue(e.target.value)}
                         rows={4}
-                        style={{ width: "100%" }}
+                        style={{ 
+                            width: "100%", 
+                            maxWidth: "100%",
+                            boxSizing: "border-box",
+                            resize: "vertical",
+                            wordWrap: "break-word",
+                            overflowWrap: "break-word"
+                        }}
                     />
                     {/* Tallennusnappi */}
                     <button onClick={handleSaveClick}>Tallenna</button>
                 </div>
             ) : (
-                <p style={{ whiteSpace: "pre-line" }}>{value}</p>
+                <p style={{ 
+                    whiteSpace: "pre-line",
+                    wordWrap: "break-word",
+                    overflowWrap: "break-word",
+                    maxWidth: "100%"
+                }}>{value}</p>
             )}
         </div>
     );
