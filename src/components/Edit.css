@@ -1,0 +1,28 @@
+button {
+    margin: 0 5px 5px 0;
+}
+
+.bbcode-columns {
+    display: flex;
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.bbcode-column {
+    flex: 1;
+    padding: 0.5em;
+    border-radius: 4px;
+    min-width: 0;
+}
+
+.esikatselu {
+    margin-top: 1em;
+    border-radius: "8px";
+}
+
+.infobox {
+    white-space: "pre-line";
+    word-wrap: "break-word";
+    overflow-wrap: "break-word";
+    max-width: "100%";
+}
