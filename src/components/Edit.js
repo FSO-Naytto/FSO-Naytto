@@ -1,56 +1,102 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import './Edit.css';
 
-const Edit = ( {title, value, onChange }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    const [tempValue, setTempValue] = useState(value);
+function parseBBCode(text) {
+  // Bold, italics, alleviivattu teksti
+  text = text.replace(/\[b\](.*?)\[\/b\]/gi, '<strong>$1</strong>');
+  text = text.replace(/\[i\](.*?)\[\/i\]/gi, '<em>$1</em>');
+  text = text.replace(/\[u\](.*?)\[\/u\]/gi, '<u>$1</u>');
+  // URL
+  text = text.replace(/\[url=(.+?)\](.+?)\[\/url\]/gi, '<a href="$1" target="_blank" rel="noopener noreferrer">$2</a>');
+  text = text.replace(/\[url\](.+?)\[\/url\]/gi, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+  // Kuva
+  text = text.replace(/\[img\](.+?)\[\/img\]/gi, '<img src="$1" alt="" style="max-width:100%;" />');
+  // Väri
+  text = text.replace(/\[color=(.+?)\](.*?)\[\/color\]/gi, '<span style="color:$1;">$2</span>');
+  // Koko
+  text = text.replace(/\[size=(\d+)\](.*?)\[\/size\]/gi, '<span style="font-size:$10px;">$2</span>');
+  // Columnit
+  text = text.replace(
+    /\[columns\]([\s\S]*?)\[\/columns\]/gi,
+    (match, content) => {
+      const columns = content.split(/\[nextcol\]/gi).map(colContent =>
+        `<div class="bbcode-column">${colContent.trim()}</div>`
+      );
+      return `<div class="bbcode-columns">${columns.join("")}</div>`;
+    }
+  );
+  text = text.replace(/\n/g, '<br />');
 
-    // Kun Muokkaa -nappi klikkaa, siirtyy muokkaustilaan
-    const handleEditClick = () => setIsEditing(true);
+  return text;
+}
 
-    // Tallentaa muutokset
-    const handleSaveClick = () => {
-        setIsEditing(false);
-        onChange(tempValue);
-    };
+const Edit = ({ title, value, onChange }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [bbcode, setBBCode] = useState(value || "");
+  const textareaRef = useRef(null);
 
-    return (
+  const handleEditClick = () => setIsEditing(true);
+  const handleSaveClick = () => {
+    setIsEditing(false);
+    onChange(bbcode);
+  };
+
+  // Lisää tägin
+  const insertTag = (openTag, closeTag = "") => {
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const before = bbcode.substring(0, start);
+    const after = bbcode.substring(end);
+    const newValue = before + openTag + closeTag + after;
+    setBBCode(newValue);
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + openTag.length;
+    }, 0);
+  };
+
+  return (
+    <div>
+      <h1>
+        {title}
+        <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
+          Muokkaa
+        </button>
+      </h1>
+      {isEditing ? (
         <div>
-            <h1>
-                {title}
-                {/* Muokkausnappi*/}
-                <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
-                    Muokkaa
-                </button>
-            </h1>
-            {isEditing ? (
-                <div>
-                    {/* Tekstikenttä*/}
-                    <textarea
-                        value={tempValue}
-                        onChange={e => setTempValue(e.target.value)}
-                        rows={4}
-                        style={{ 
-                            width: "100%", 
-                            maxWidth: "100%",
-                            boxSizing: "border-box",
-                            resize: "vertical",
-                            wordWrap: "break-word",
-                            overflowWrap: "break-word"
-                        }}
-                    />
-                    {/* Tallennusnappi */}
-                    <button onClick={handleSaveClick}>Tallenna</button>
-                </div>
-            ) : (
-                <p style={{ 
-                    whiteSpace: "pre-line",
-                    wordWrap: "break-word",
-                    overflowWrap: "break-word",
-                    maxWidth: "100%"
-                }}>{value}</p>
-            )}
+          {/* BBCode täginapit */}
+          <div>
+            <button onClick={() => insertTag("[b]", "[/b]")}>Paksu</button>
+            <button onClick={() => insertTag("[i]", "[/i]")}>Italics</button>
+            <button onClick={() => insertTag("[u]", "[/u]")}>Alleviivaus</button>
+            <button onClick={() => insertTag("[url=]", "[/url]")}>URL</button>
+            <button onClick={() => insertTag("[img]", "[/img]")}>Kuva</button>
+            <button onClick={() => insertTag("[color=]", "[/color]")}>Väri</button>
+            <button onClick={() => insertTag("[size=]", "[/size]")}>Koko</button>
+            <button onClick={() => insertTag("[columns]", "[/columns]")}>Column</button>
+            <button onClick={() => insertTag("[nextcol]")}>Nextcol</button>
+          </div>
+          <textarea
+            ref={textareaRef}
+            value={bbcode}
+            onChange={e => setBBCode(e.target.value)}
+            rows={8}
+            style={{ width: "100%" }}
+          />
+          <button onClick={handleSaveClick}>Tallenna</button>
+          <div className="esikatselu">
+            <strong>Esikatselu:</strong>
+            <div dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
+          </div>
         </div>
-    );
+      ) : (
+        <div className="infobox" dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
+      )}
+    </div>
+  );
 };
 
 export default Edit;
