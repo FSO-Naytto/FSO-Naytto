@@ -11,8 +11,11 @@ input::placeholder {
 button {
     background-color: #1f1f1f;
     color: white;
+    margin: 0 0 0 10px;
 }
 
 .competitorList {
     font-size: 20px;
+    list-style-type: none;
+    padding-left: 0;
 }
