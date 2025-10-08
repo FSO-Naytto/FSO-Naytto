@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAdmin } from '../auth/AdminContext';
 
 const WallOfChampions = () => {
   const [images, setImages] = useState([]);
@@ -11,11 +12,15 @@ const WallOfChampions = () => {
     }
   };
 
+  const { isAdmin } = useAdmin();
+
   return (
     <div>
       <h1>Wall of Champions</h1>
       {/* Tiedoston valinta */}
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      {isAdmin && (
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+      )}
       {/* Näyttää ladatut kuvat listassa */}
       <ul style={{ listStyleType: "none", padding: 0 }}>
         {images.map((img, idx) => (

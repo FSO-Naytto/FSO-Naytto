@@ -8,6 +8,7 @@ const HotlapHontsa = () => {
     <div>
       <Edit
         title="Hotlap & Höntsä - Info"
+        contentKey="hotlap_info"
         value={paragraph}
         onChange={setParagraph}/>
     </div>

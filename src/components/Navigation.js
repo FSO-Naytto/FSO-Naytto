@@ -12,6 +12,7 @@ const Navigation = () => {
         <li><Link to="/touge">TOUGE</Link></li>
         <li><Link to="/hotlap-hontsa">HOTLAP & HÖNTSÄ</Link></li>
         <li><Link to="/wall-of-champions">HALL OF FAME</Link></li>
+        <li><Link to="/admin">ADMIN</Link></li>
       </ul>
     </nav>
   );

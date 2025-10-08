@@ -8,6 +8,7 @@ const Touge = () => {
     <div>
       <Edit
         title="Touge - Info"
+        contentKey="touge_info"
         value={paragraph}
         onChange={setParagraph}/>
     </div>

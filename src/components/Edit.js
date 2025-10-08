@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import './Edit.css';
+import { useAdmin } from '../auth/AdminContext';
+import { getContent, updateContent } from '../services/api';
 
 function parseBBCode(text) {
   // Bold, italics, alleviivattu teksti
@@ -30,15 +32,41 @@ function parseBBCode(text) {
   return text;
 }
 
-const Edit = ({ title, value, onChange }) => {
+const Edit = ({ title, contentKey, value, onChange }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [bbcode, setBBCode] = useState(value || "");
   const textareaRef = useRef(null);
+  const { isAdmin, token } = useAdmin();
+
+  // Hae sisältö palvelimelta, jos avain annettu
+  useEffect(() => {
+    let mounted = true;
+    if (contentKey) {
+      getContent(contentKey)
+        .then((data) => {
+          if (mounted) {
+            const body = data?.body || "";
+            setBBCode(body);
+            if (onChange) onChange(body);
+          }
+        })
+        .catch(() => {});
+    }
+    return () => { mounted = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contentKey]);
 
   const handleEditClick = () => setIsEditing(true);
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     setIsEditing(false);
-    onChange(bbcode);
+    if (contentKey) {
+      try {
+        await updateContent(contentKey, bbcode, token);
+      } catch (e) {
+        // voidaan näyttää virhe, mutta pidetään hiljaisena nyt
+      }
+    }
+    if (onChange) onChange(bbcode);
   };
 
   // Lisää tägin
@@ -61,11 +89,13 @@ const Edit = ({ title, value, onChange }) => {
     <div>
       <h1>
         {title}
-        <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
-          Muokkaa
-        </button>
+        {isAdmin && (
+          <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
+            Muokkaa
+          </button>
+        )}
       </h1>
-      {isEditing ? (
+      {isAdmin && isEditing ? (
         <div>
           {/* BBCode täginapit */}
           <div>

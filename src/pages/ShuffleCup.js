@@ -9,10 +9,11 @@ const ShuffleCup = () => {
     <div>
       <Edit
         title="Shuffle Cup - Info"
+        contentKey="shuffle_info"
         value={paragraph}
         onChange={setParagraph}/>
       <h1>Shuffle Cup - Tulokset</h1>
-      <CompetitorList />
+      <CompetitorList category="shuffle-cup" />
     </div>
   );
 };

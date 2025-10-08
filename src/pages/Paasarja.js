@@ -9,10 +9,11 @@ const Paasarja = () => {
     <div>
       <Edit
         title="Pääsarja - Info"
+        contentKey="paasarja_info"
         value={paragraph}
         onChange={setParagraph}/>
       <h1>Pääsarja - Tulokset</h1>
-      <CompetitorList />
+      <CompetitorList category="paasarja" />
     </div>
   );
 };
