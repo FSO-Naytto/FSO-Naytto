@@ -5,7 +5,10 @@ const Header = () => {
   return (
     <header>
       <img src="/ars.png" alt="Arctic Racing Society Logo" className="logo" />
-      <h1>🏁Arctic Racing Society🏁</h1>
+      <h1>
+        <span className="full-title">🏁Arctic Racing Society🏁</span>
+        <span className="short-title">🏁ARS🏁</span>
+      </h1>
     </header>
   );
 };

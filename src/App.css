@@ -1,20 +1,25 @@
-body {
-  background-color: #121212; 
-  color: #e0e0e0; 
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+html, body, #root, .App {
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 main {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px;
