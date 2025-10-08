@@ -10,7 +10,7 @@ const CompetitorList = ({ category }) => {
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [editPoints, setEditPoints] = useState("");
-  const [error, setError] = useState(""); // Error message state
+  const [error, setError] = useState("");
 
   const { isAdmin, token } = useAdmin();
 
@@ -158,5 +158,6 @@ const CompetitorList = ({ category }) => {
     </div>
   );
 };
+
 
 export default CompetitorList;
