@@ -10,6 +10,7 @@ const CompetitorList = ({ category }) => {
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [editPoints, setEditPoints] = useState("");
+  const [error, setError] = useState(""); // Error message state
 
   const { isAdmin, token } = useAdmin();
 
@@ -46,7 +47,18 @@ const CompetitorList = ({ category }) => {
   // Kilpailijan lisäys
   const addCompetitor = (e) => {
     e.preventDefault();
-    if (!name || !points) return;
+    if (!name.trim() && !points.trim()) {
+      setError("Lisää nimi ja pistemäärä.");
+      return;
+    }
+    if (!name.trim()) {
+      setError("Lisää nimi.");
+      return;
+    }
+    if (!points.trim()) {
+      setError("Lisää pistemäärä.");
+      return;
+    }
     const next = [
       ...competitors,
       { id: Date.now(), name, points: Number(points) }
@@ -55,6 +67,7 @@ const CompetitorList = ({ category }) => {
     if (isAdmin) persist(next);
     setName("");
     setPoints("");
+    setError(""); // Poista virhe kun ehdot täytetään
   };
 
   // Kilpailijan poisto
@@ -89,6 +102,7 @@ const CompetitorList = ({ category }) => {
     <div>
       {isAdmin && (
         <form onSubmit={addCompetitor}>
+          {error && <div className="error-message">{error}</div>}
           <input
             type="text"
             placeholder="Nimi"
