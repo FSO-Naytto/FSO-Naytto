@@ -26,6 +26,10 @@
     text-transform: uppercase;
 }
 
+nav a.active {
+    color: white;
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;

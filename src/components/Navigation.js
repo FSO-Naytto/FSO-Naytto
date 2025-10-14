@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -15,13 +15,13 @@ const Navigation = () => {
         &#9776;
       </button>
       <ul className={isOpen ? 'nav-links open' : 'nav-links'}>
-        <li onClick={() => setIsOpen(false)}><Link to="/info">INFO</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/paasarja">Pääsarja</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/shuffle-cup">SHUFFLE CUP</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/touge">TOUGE</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/hotlap-hontsa">HOTLAP & HÖNTSÄ</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/wall-of-champions">HALL OF FAME</Link></li>
-        <li onClick={() => setIsOpen(false)}><Link to="/admin">ADMIN</Link></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/info" activeClassName="active">INFO</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/paasarja" activeClassName="active">Pääsarja</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/shuffle-cup" activeClassName="active">SHUFFLE CUP</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/touge" activeClassName="active">TOUGE</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/hotlap-hontsa" activeClassName="active">HOTLAP & HÖNTSÄ</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/wall-of-champions" activeClassName="active">HALL OF FAME</NavLink></li>
+        <li onClick={() => setIsOpen(false)}><NavLink to="/admin" activeClassName="active">ADMIN</NavLink></li>
       </ul>
     </nav>
   );
