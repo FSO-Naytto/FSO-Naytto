@@ -32,17 +32,19 @@ function App() {
             <ThemeToggle />
             <Navigation />
             <main>
-              <Routes>
-                <Route path="/" element={<Info />} />
-                <Route path="/info" element={<Info />} />
-                <Route path="/paasarja" element={<Paasarja/>} />
-                <Route path="/shuffle-cup" element={<ShuffleCup/>} />
-                <Route path="/touge" element={<Touge/>} />
-                <Route path="/partners" element={<Partners />} />
-                <Route path="/wall-of-champions" element={<WallOfChampions />} />
-                <Route path="/hotlap-hontsa" element={<HotlapHontsa />} />
-                <Route path="/admin" element={<AdminLogin />} />
-              </Routes>
+              <div className="content-wrapper">
+                <Routes>
+                  <Route path="/" element={<Info />} />
+                  <Route path="/info" element={<Info />} />
+                  <Route path="/paasarja" element={<Paasarja/>} />
+                  <Route path="/shuffle-cup" element={<ShuffleCup/>} />
+                  <Route path="/touge" element={<Touge/>} />
+                  <Route path="/partners" element={<Partners />} />
+                  <Route path="/wall-of-champions" element={<WallOfChampions />} />
+                  <Route path="/hotlap-hontsa" element={<HotlapHontsa />} />
+                  <Route path="/admin" element={<AdminLogin />} />
+                </Routes>
+              </div>
             </main>
             <Footer />
           </div>

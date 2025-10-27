@@ -1,4 +1,4 @@
-const API_BASE = process.env.REACT_APP_API_BASE || '';
+const API_BASE = 'https://fsoserver.onrender.com';
 
 export const getContent = async (key) => {
   const res = await fetch(`${API_BASE}/api/content/${encodeURIComponent(key)}`);

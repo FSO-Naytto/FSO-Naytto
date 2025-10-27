@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 html, body, #root, .App {
   margin: 0;
   padding: 0;
@@ -14,25 +18,35 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden;
 }
 
 main {
-  max-width: 1200px;
-  margin: 0 auto;
   width: 100%;
   flex-grow: 1;
-  overflow-y: auto;
+  overflow-y: auto; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  -ms-overflow-style: none;  
-  scrollbar-width: none; 
 }
 
 main::-webkit-scrollbar {
     display: none;
 }
 
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 10px;
+  }
+}
+
 a {
-  color: var(--link-text); 
+  color: var(--link-text);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -42,9 +56,11 @@ a:hover {
 }
 
 header, footer {
-  padding: 20px;
+  width: 100%;
+  padding: 20px 0;
   text-align: center;
   background-color: var(--footer-bg);
+  flex-shrink: 0; 
 }
 
 header h1 {
