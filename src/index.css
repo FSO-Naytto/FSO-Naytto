@@ -31,6 +31,7 @@ body.light-mode {
   --active-page: black;
   --link-hover: #1b0158;
   --border-color: #a0a0a0;
+  --desc-color: #747373;
   background: var(--background);
   color: var(--text);
 }
@@ -43,6 +44,7 @@ body.dark-mode {
   --active-page: white;
   --link-hover: #3700b3;
   --border-color: #333;
+  --desc-color: #747373;
   background: var(--background);
   color: var(--text);
 }

@@ -17,6 +17,9 @@ function parseBBCode(text) {
   text = text.replace(/\[color=(.+?)\](.*?)\[\/color\]/gi, '<span style="color:$1;">$2</span>');
   // Koko
   text = text.replace(/\[size=(\d+)\](.*?)\[\/size\]/gi, '<span style="font-size:$10px;">$2</span>');
+  // Suunnat
+  text = text.replace(/\[center\]([\s\S]*?)\[\/center\]/gi, '<div style="text-align:center;">$1</div>');
+  text = text.replace(/\[right\]([\s\S]*?)\[\/right\]/gi, '<div style="text-align:right;">$1</div>');
   // Columnit
   text = text.replace(
     /\[columns\]([\s\S]*?)\[\/columns\]/gi,
@@ -108,6 +111,8 @@ const Edit = ({ title, contentKey, value, onChange }) => {
             <button onClick={() => insertTag("[size=]", "[/size]")}>Koko</button>
             <button onClick={() => insertTag("[columns]", "[/columns]")}>Column</button>
             <button onClick={() => insertTag("[nextcol]")}>Nextcol</button>
+            <button onClick={() => insertTag("[center]", "[/center]")}>Keski</button>
+            <button onClick={() => insertTag("[right]", "[/right]")}>Oikea</button>
           </div>
           <textarea
             ref={textareaRef}

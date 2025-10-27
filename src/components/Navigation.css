@@ -47,8 +47,8 @@ nav {
         width: 100%;
         text-align: center;
         cursor: pointer;
-        border-top: 1px solid #333;
-        border-bottom: 1px solid #333;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .nav-links {
@@ -67,6 +67,6 @@ nav {
 
     .nav-links li a {
         padding: 20px;
-        border-top: 1px solid #333;
+        border-top: 1px solid var(--border-color);
     }
 }
