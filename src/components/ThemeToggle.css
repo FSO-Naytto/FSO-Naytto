@@ -1,0 +1,14 @@
+.theme-toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    background-color: var(--footer-bg);
+}
+
+.theme-toggle {
+    font-family: "Merriweather Sans", sans-serif;
+    width: 80px;
+    float: right;
+    margin-right: 20px;
+    background-color: var(--background);
+    color: var(--text);
+}
