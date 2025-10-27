@@ -8,11 +8,13 @@ const CompetitorList = ({ category }) => {
   const [sourceUrl, setSourceUrl] = useState("");
   const [fetchError, setFetchError] = useState("");
   const [urlInput, setUrlInput] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const { isAdmin, token } = useAdmin();
 
   const fetchLeaderboard = useCallback(() => {
     let mounted = true;
+    setIsLoading(true);
     setFetchError("");
     getLeaderboard(category)
       .then((data) => {
@@ -30,6 +32,11 @@ const CompetitorList = ({ category }) => {
       .catch(() => {
         if (mounted) {
           setFetchError("Pisteiden haku epäonnistui. Palvelin ei vastaa.");
+        }
+      })
+      .finally(() => {
+        if (mounted) {
+          setIsLoading(false);
         }
       });
     return () => {
@@ -76,13 +83,17 @@ const CompetitorList = ({ category }) => {
         </p>
       )}
 
-      <ul className="competitorList">
-        {sortedCompetitors.map((c, idx) => (
-          <li key={c.id}>
-            {idx + 1}. {c.name} - {c.points} pistettä
-          </li>
-        ))}
-      </ul>
+      {isLoading && sortedCompetitors.length === 0 ? (
+        <p>Ladataan...</p>
+      ) : (
+        <ul className="competitorList">
+          {sortedCompetitors.map((c, idx) => (
+            <li key={c.id}>
+              {idx + 1}. {c.name} - {c.points} pistettä
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
