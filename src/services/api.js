@@ -48,3 +48,16 @@ export const updateLeaderboard = async (category, entries, token) => {
   if (!res.ok) throw new Error('Failed to update leaderboard');
   return res.json();
 };
+
+export const updateLeaderboardSource = async (category, url, token) => {
+  const res = await fetch(`${API_BASE}/api/leaderboard/${encodeURIComponent(category)}/source`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: JSON.stringify({ url })
+  });
+  if (!res.ok) throw new Error('Failed to update leaderboard source');
+  return res.json();
+};

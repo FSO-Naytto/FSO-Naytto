@@ -1,3 +1,24 @@
+.url-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.url-input {
+  flex-grow: 1;
+  padding: 8px;
+}
+
+.source-link {
+  font-size: 0.9em;
+  color: #aaa;
+  margin-bottom: 15px;
+  word-break: break-all;
+}
+
+.source-link a {
+  color: #aef;
+}
 input {
     margin: 10px;
     color: white;

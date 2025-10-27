@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import { getDriverPoints } from './datasearch.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ const Content = mongoose.model('Content', contentSchema);
 // leaderboard-malli kilpailutuloksille
 const leaderboardSchema = new mongoose.Schema({
   category: { type: String, required: true, unique: true },
+  sourceUrl: { type: String, default: '' },
   entries: [
     {
       name: { type: String, required: true },
@@ -67,7 +69,7 @@ app.post('/api/login', (req, res) => {
   return res.status(401).json({ error: 'väärä käyttäjä tai salasana' });
 });
 
-// Sisältö haetaan avaimella
+// Sisällön hakua
 app.get('/api/content/:key', async (req, res) => {
   const { key } = req.params;
   const doc = await Content.findOne({ key });
@@ -75,12 +77,26 @@ app.get('/api/content/:key', async (req, res) => {
   return res.json({ key: doc.key, body: doc.body, updatedAt: doc.updatedAt });
 });
 
-// Lisätään leaderboard-reitit
+// Leaderboard-reitit
 app.get('/api/leaderboard/:category', async (req, res) => {
   const { category } = req.params;
   const doc = await Leaderboard.findOne({ category });
-  if (!doc) return res.json({ category, entries: [] });
-  return res.json({ category: doc.category, entries: doc.entries, updatedAt: doc.updatedAt });
+
+  if (doc && doc.sourceUrl) {
+    try {
+      const entries = await getDriverPoints(doc.sourceUrl);
+      // driver' -> 'name' 
+      const formattedEntries = entries.map(e => ({ name: e.driver, points: e.points }));
+      return res.json({ category: doc.category, entries: formattedEntries, sourceUrl: doc.sourceUrl, updatedAt: new Date() });
+    } catch (error) {
+      // debuggia
+      console.error(`Datan haku epäonnistui osoitteesta ${doc.sourceUrl}:`, error.message);
+      return res.json({ category, entries: [], sourceUrl: doc.sourceUrl, error: 'Pisteiden haku epäonnistui' });
+    }
+  }
+
+  if (!doc) return res.json({ category, entries: [], sourceUrl: '' });
+  return res.json({ category: doc.category, entries: doc.entries, sourceUrl: doc.sourceUrl, updatedAt: doc.updatedAt });
 });
 
 app.put('/api/leaderboard/:category', requireAdmin, async (req, res) => {
@@ -98,7 +114,27 @@ app.put('/api/leaderboard/:category', requireAdmin, async (req, res) => {
   return res.json({ category: updated.category, entries: updated.entries, updatedAt: updated.updatedAt });
 });
 
-// Sisällön päivitys (vain admin)
+app.put('/api/leaderboard/:category/source', requireAdmin, async (req, res) => {
+  const { category } = req.params;
+  const { url } = req.body || {};
+
+  if (typeof url !== 'string') {
+    return res.status(400).json({ error: 'URL puuttuu tai on virheellinen' });
+  }
+
+  try {
+    const updated = await Leaderboard.findOneAndUpdate(
+      { category },
+      { sourceUrl: url, updatedAt: new Date() },
+      { upsert: true, new: true }
+    );
+    return res.json({ category: updated.category, sourceUrl: updated.sourceUrl });
+  } catch (e) {
+    return res.status(500).json({ error: 'URL:n tallennus epäonnistui' });
+  }
+});
+
+// Sisällön päivitys (vain adminille)
 app.put('/api/content/:key', requireAdmin, async (req, res) => {
   const { key } = req.params;
   const { body } = req.body || {};

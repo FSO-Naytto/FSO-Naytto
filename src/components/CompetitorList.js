@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAdmin } from "../auth/AdminContext";
-import { getLeaderboard, updateLeaderboard } from "../services/api";
+import { getLeaderboard, updateLeaderboardSource } from "../services/api";
 import "./CompetitorList.css";
 
 const CompetitorList = ({ category }) => {
   const [competitors, setCompetitors] = useState([]);
-  const [name, setName] = useState("");
-  const [points, setPoints] = useState("");
-  const [editingId, setEditingId] = useState(null);
-  const [editName, setEditName] = useState("");
-  const [editPoints, setEditPoints] = useState("");
-  const [error, setError] = useState("");
+  const [sourceUrl, setSourceUrl] = useState("");
+  const [fetchError, setFetchError] = useState("");
+  const [urlInput, setUrlInput] = useState("");
 
   const { isAdmin, token } = useAdmin();
 
-  // Hakee leaderboardin kategoriakohtaisesti
-  useEffect(() => {
+  const fetchLeaderboard = useCallback(() => {
     let mounted = true;
+    setFetchError("");
     getLeaderboard(category)
       .then((data) => {
         if (!mounted) return;
@@ -24,140 +21,70 @@ const CompetitorList = ({ category }) => {
         setCompetitors(
           entries.map((e, i) => ({ id: Date.now() + i, name: e.name, points: Number(e.points) }))
         );
+        setSourceUrl(data.sourceUrl || "");
+        setUrlInput(data.sourceUrl || "");
+        if (data.error) {
+          setFetchError(data.error);
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        if (mounted) {
+          setFetchError("Pisteiden haku epäonnistui. Palvelin ei vastaa.");
+        }
+      });
     return () => {
       mounted = false;
     };
   }, [category]);
 
-  // Tallentaa muutokset palvelimeen
-  const persist = async (next) => {
-    try {
-      await updateLeaderboard(
-        category,
-        next.map((c) => ({ name: c.name, points: Number(c.points) })),
-        token
-      );
-    } catch (e) {
-      // hiljainen virhe
-    }
-  };
+  useEffect(() => {
+    fetchLeaderboard();
+  }, [fetchLeaderboard]);
 
-  // Kilpailijan lisäys
-  const addCompetitor = (e) => {
+  const handleUrlSave = async (e) => {
     e.preventDefault();
-    if (!name.trim() && !points.trim()) {
-      setError("Lisää nimi ja pistemäärä.");
-      return;
+    try {
+      await updateLeaderboardSource(category, urlInput, token);
+      fetchLeaderboard(); 
+    } catch (error) {
+      setFetchError("URL-osoitteen tallennus epäonnistui.");
     }
-    if (!name.trim()) {
-      setError("Lisää nimi.");
-      return;
-    }
-    if (!points.trim()) {
-      setError("Lisää pistemäärä.");
-      return;
-    }
-    const next = [
-      ...competitors,
-      { id: Date.now(), name, points: Number(points) }
-    ];
-    setCompetitors(next);
-    if (isAdmin) persist(next);
-    setName("");
-    setPoints("");
-    setError(""); // Poista virhe kun ehdot täytetään
   };
 
-  // Kilpailijan poisto
-  const handleDelete = (id) => {
-    const next = competitors.filter((c) => c.id !== id);
-    setCompetitors(next);
-    if (isAdmin) persist(next);
-  };
-
-  // Kilpailijan tietojen mmuokkaus
-  const handleEdit = (competitor) => {
-    setEditingId(competitor.id);
-    setEditName(competitor.name);
-    setEditPoints(competitor.points);
-  };
-
-  const handleSave = (id) => {
-    const next = competitors.map((c) =>
-      c.id === id ? { ...c, name: editName, points: Number(editPoints) } : c
-    );
-    setCompetitors(next);
-    setEditingId(null);
-    setEditName("");
-    setEditPoints("");
-    if (isAdmin) persist(next);
-  };
-
-  // Kilpailijoiden lajittelu numerojärjestyksessä pisteiden mukaan
   const sortedCompetitors = [...competitors].sort((a, b) => b.points - a.points);
 
   return (
     <div>
       {isAdmin && (
-        <form onSubmit={addCompetitor}>
-          {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleUrlSave} className="url-form">
           <input
             type="text"
-            placeholder="Nimi"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Syötä tulossivun URL"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            className="url-input"
           />
-          <input
-            type="number"
-            placeholder="Pisteet"
-            value={points}
-            onChange={(e) => setPoints(e.target.value)}
-          />
-          <button type="submit">Lisää kilpailija</button>
+          <button type="submit">Tallenna URL</button>
         </form>
       )}
+      
+      {fetchError && <div className="error-message">{fetchError}</div>}
+
+      {isAdmin && sourceUrl && (
+        <p className="source-link">
+          Pisteet haettu osoitteesta: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{sourceUrl}</a>
+        </p>
+      )}
+
       <ul className="competitorList">
         {sortedCompetitors.map((c, idx) => (
           <li key={c.id}>
-            {editingId === c.id ? (
-              isAdmin ? (
-                <>
-                  <input
-                    type="text"
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                  />
-                  <input
-                    type="number"
-                    value={editPoints}
-                    onChange={(e) => setEditPoints(e.target.value)}
-                  />
-                  <button onClick={() => handleSave(c.id)}>Tallenna</button>
-                </>
-              ) : (
-                <>
-                  {idx + 1}. {c.name} - {c.points} pistettä
-                </>
-              )
-            ) : (
-              <>
-                {idx + 1}. {c.name} - {c.points} pistettä
-                {isAdmin && (
-                  <>
-                    <button onClick={() => handleEdit(c)}>Muokkaa</button>
-                    <button onClick={() => handleDelete(c.id)}>Poista</button>
-                  </>
-                )}
-              </>
-            )}
+            {idx + 1}. {c.name} - {c.points} pistettä
           </li>
         ))}
       </ul>
     </div>
   );
 };
-
 
 export default CompetitorList;
