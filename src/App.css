@@ -32,19 +32,19 @@ main::-webkit-scrollbar {
 }
 
 a {
-  color: #bb86fc; 
+  color: var(--link-text); 
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #3700b3;
+  color: var(--link-hover);
 }
 
 header, footer {
   padding: 20px;
   text-align: center;
-  background-color: #1f1f1f; 
+  background-color: var(--footer-bg);
 }
 
 header h1 {

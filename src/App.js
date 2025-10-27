@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
+import ThemeToggle from './components/ThemeToggle'
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Info from './pages/Info';
@@ -28,6 +29,7 @@ function App() {
         <Router>
           <div className="App">
             <Header />
+            <ThemeToggle />
             <Navigation />
             <main>
               <Routes>
