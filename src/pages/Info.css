@@ -2,7 +2,7 @@
   text-align: center;
   margin-bottom: 40px;
   padding-bottom: 40px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .info-page .welcome-section h1 {
@@ -20,7 +20,7 @@
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
-  border-bottom: 2px solid #bb86fc;
+  border-bottom: 2px solid var(--link-text);
   padding-bottom: 10px;
   display: inline-block;
 }
@@ -37,12 +37,12 @@
 }
 
 .series-card {
-  background-color: #1f1f1f;
+  background-color: var(--footer-bg);
   padding: 20px;
   border-radius: 8px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid #333;
+  border: 1px solid var(--border-color);
 }
 
 .series-card:hover {
@@ -54,7 +54,7 @@
 .series-card h3 {
   margin-top: 0;
   font-size: 1.5rem;
-  color: #bb86fc;
+  color: var(--link-text);
 }
 
 .series-card p {
@@ -65,7 +65,7 @@
 .instagram-section {
   text-align: center;
   padding-bottom: 40px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .donate-section {
@@ -77,7 +77,7 @@
 .donate-section h2 {
   font-size: 2rem;
   margin-bottom: 15px;
-  color: #bb86fc;
+  color: var(--link-text);
 }
 
 .donate-section p {
