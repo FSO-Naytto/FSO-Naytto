@@ -1,5 +1,6 @@
-button {
-    margin: 0 5px 5px 0;
+.buttons {
+    margin-left: -10px;
+    margin-bottom: 5px;
 }
 
 .bbcode-columns {
@@ -18,11 +19,23 @@ button {
 .esikatselu {
     margin-top: 1em;
     border-radius: "8px";
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-line;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .infobox {
     white-space: "pre-line";
     word-wrap: "break-word";
     overflow-wrap: "break-word";
+    word-break: break-word;
+    box-sizing: border-box;
     max-width: "100%";
+}
+
+.save-button {
+    margin-left: -1px;
+    margin-top: 5px;
 }

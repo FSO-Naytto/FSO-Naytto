@@ -30,6 +30,8 @@ function parseBBCode(text) {
       return `<div class="bbcode-columns">${columns.join("")}</div>`;
     }
   );
+  // Fontit
+  text = text.replace(/\[font=(.+?)\](.*?)\[\/font\]/gi, '<span style="font-family:$1;">$2</span>');
   text = text.replace(/\n/g, '<br />');
 
   return text;
@@ -101,7 +103,7 @@ const Edit = ({ title, contentKey, value, onChange }) => {
       {isAdmin && isEditing ? (
         <div>
           {/* BBCode täginapit */}
-          <div>
+          <div className="buttons">
             <button onClick={() => insertTag("[b]", "[/b]")}>Paksu</button>
             <button onClick={() => insertTag("[i]", "[/i]")}>Italics</button>
             <button onClick={() => insertTag("[u]", "[/u]")}>Alleviivaus</button>
@@ -113,6 +115,7 @@ const Edit = ({ title, contentKey, value, onChange }) => {
             <button onClick={() => insertTag("[nextcol]")}>Nextcol</button>
             <button onClick={() => insertTag("[center]", "[/center]")}>Keski</button>
             <button onClick={() => insertTag("[right]", "[/right]")}>Oikea</button>
+            <button onClick={() => insertTag("[font=]", "[/font]")}>Fontti</button>
           </div>
           <textarea
             ref={textareaRef}
@@ -121,7 +124,7 @@ const Edit = ({ title, contentKey, value, onChange }) => {
             rows={8}
             style={{ width: "100%" }}
           />
-          <button onClick={handleSaveClick}>Tallenna</button>
+          <button className="save-button" onClick={handleSaveClick}>Tallenna</button>
           <div className="esikatselu">
             <strong>Esikatselu:</strong>
             <div dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
