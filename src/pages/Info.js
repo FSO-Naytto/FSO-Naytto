@@ -9,7 +9,7 @@ const Info = () => {
     <div className="info-page-grid">
       <main className="main-content">
         <section className="welcome-section">
-          <h1>Tervetuloa Arctic Racing Societyyn!</h1>
+          <h1>Tervetuloa ARS:iin!</h1>
           <p>ARS on pääosin suomalainen simracing-yhteisö, jonka pääpaino on Assetto Corsa -pelissä. Meillä ajetaan rennolla otteella – tämä on kasuaalin ajamisen koti, jossa kaiken tasoiset kuskit ovat lämpimästi tervetulleita. Sarjoja täällä yritetään ajaa siten että jokaiselle jossain vaiheessa löytyisi jotain mieleistä.</p>
         </section>
         <section className="series-links">

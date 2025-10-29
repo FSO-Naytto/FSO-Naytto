@@ -28,6 +28,7 @@
 
 nav a.active {
     color: var(--active-page);
+    text-decoration: 2px var(--active-page) underline;
 }
 
 nav {

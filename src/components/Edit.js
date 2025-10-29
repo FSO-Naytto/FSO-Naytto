@@ -40,6 +40,7 @@ function parseBBCode(text) {
 const Edit = ({ title, contentKey, value, onChange }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [bbcode, setBBCode] = useState(value || "");
+  const [showSaved, setShowSaved] = useState(false);
   const textareaRef = useRef(null);
   const { isAdmin, token } = useAdmin();
 
@@ -72,6 +73,8 @@ const Edit = ({ title, contentKey, value, onChange }) => {
       }
     }
     if (onChange) onChange(bbcode);
+    setShowSaved(true);
+    setTimeout(() => setShowSaved(false), 2000);
   };
 
   // Lisää tägin
@@ -92,47 +95,54 @@ const Edit = ({ title, contentKey, value, onChange }) => {
   
   return (
     <div>
-      <h1>
-        {title}
-        {isAdmin && (
-          <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
-            Muokkaa
-          </button>
-        )}
-      </h1>
-      {isAdmin && isEditing ? (
-        <div>
-          {/* BBCode täginapit */}
-          <div className="buttons">
-            <button onClick={() => insertTag("[b]", "[/b]")}>Paksu</button>
-            <button onClick={() => insertTag("[i]", "[/i]")}>Italics</button>
-            <button onClick={() => insertTag("[u]", "[/u]")}>Alleviivaus</button>
-            <button onClick={() => insertTag("[url=]", "[/url]")}>URL</button>
-            <button onClick={() => insertTag("[img]", "[/img]")}>Kuva</button>
-            <button onClick={() => insertTag("[color=]", "[/color]")}>Väri</button>
-            <button onClick={() => insertTag("[size=]", "[/size]")}>Koko</button>
-            <button onClick={() => insertTag("[columns]", "[/columns]")}>Column</button>
-            <button onClick={() => insertTag("[nextcol]")}>Nextcol</button>
-            <button onClick={() => insertTag("[center]", "[/center]")}>Keski</button>
-            <button onClick={() => insertTag("[right]", "[/right]")}>Oikea</button>
-            <button onClick={() => insertTag("[font=]", "[/font]")}>Fontti</button>
-          </div>
-          <textarea
-            ref={textareaRef}
-            value={bbcode}
-            onChange={e => setBBCode(e.target.value)}
-            rows={8}
-            style={{ width: "100%" }}
-          />
-          <button className="save-button" onClick={handleSaveClick}>Tallenna</button>
-          <div className="esikatselu">
-            <strong>Esikatselu:</strong>
-            <div dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
-          </div>
+      {showSaved && (
+        <div className="saved-box">
+          Muutokset tallennettu!
         </div>
-      ) : (
-        <div className="infobox" dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
       )}
+      <div>
+        <h1>
+          {title}
+          {isAdmin && (
+            <button style={{ marginLeft: "1em" }} onClick={handleEditClick}>
+              Muokkaa
+            </button>
+          )}
+        </h1>
+        {isAdmin && isEditing ? (
+          <div>
+            {/* BBCode täginapit */}
+            <div className="buttons">
+              <button onClick={() => insertTag("[b]", "[/b]")}>Paksu</button>
+              <button onClick={() => insertTag("[i]", "[/i]")}>Italics</button>
+              <button onClick={() => insertTag("[u]", "[/u]")}>Alleviivaus</button>
+              <button onClick={() => insertTag("[url=]", "[/url]")}>URL</button>
+              <button onClick={() => insertTag("[img]", "[/img]")}>Kuva</button>
+              <button onClick={() => insertTag("[color=]", "[/color]")}>Väri</button>
+              <button onClick={() => insertTag("[size=]", "[/size]")}>Koko</button>
+              <button onClick={() => insertTag("[columns]", "[/columns]")}>Column</button>
+              <button onClick={() => insertTag("[nextcol]")}>Nextcol</button>
+              <button onClick={() => insertTag("[center]", "[/center]")}>Keski</button>
+              <button onClick={() => insertTag("[right]", "[/right]")}>Oikea</button>
+              <button onClick={() => insertTag("[font=]", "[/font]")}>Fontti</button>
+            </div>
+            <textarea
+              ref={textareaRef}
+              value={bbcode}
+              onChange={e => setBBCode(e.target.value)}
+              rows={8}
+              style={{ width: "100%" }}
+            />
+            <button className="save-button" onClick={handleSaveClick}>Tallenna</button>
+            <div className="esikatselu">
+              <strong>Esikatselu:</strong>
+              <div dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
+            </div>
+          </div>
+        ) : (
+          <div className="infobox" dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
+        )}
+      </div>
     </div>
   );
 };

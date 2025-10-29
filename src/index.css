@@ -26,12 +26,12 @@ body.light-mode {
   --background: #dddddd;
   --text: #111;
   --footer-bg: white;
-  --link-text: #7536c2;
+  --link-text: #008686;
   --navbar-bg: white;
-  --active-page: black;
-  --link-hover: #1b0158;
+  --active-page: #01172C;
+  --link-hover: #01172C;
   --border-color: #a0a0a0;
-  --desc-color: #747373;
+  --desc-color: #796868;
   background: var(--background);
   color: var(--text);
 }
@@ -40,9 +40,9 @@ body.dark-mode {
   --background: #111;
   --text: white;
   --footer-bg: #1f1f1f;
-  --link-text: #bb86fc;
+  --link-text: #259999;
   --active-page: white;
-  --link-hover: #3700b3;
+  --link-hover: white;
   --border-color: #333;
   --desc-color: #747373;
   background: var(--background);

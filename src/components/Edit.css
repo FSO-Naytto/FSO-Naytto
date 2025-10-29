@@ -39,3 +39,17 @@
     margin-left: -1px;
     margin-top: 5px;
 }
+
+.saved-box {
+  position: fixed;
+  top: 15em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 0.5em 1.5em;
+  border-radius: 4px;
+  text-align: center;
+}
