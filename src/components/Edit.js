@@ -40,6 +40,7 @@ function parseBBCode(text) {
 const Edit = ({ title, contentKey, value, onChange }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [bbcode, setBBCode] = useState(value || "");
+  const [originalBBCode, setOriginalBBCode] = useState(value || "");
   const [showSaved, setShowSaved] = useState(false);
   const textareaRef = useRef(null);
   const { isAdmin, token } = useAdmin();
@@ -53,6 +54,7 @@ const Edit = ({ title, contentKey, value, onChange }) => {
           if (mounted) {
             const body = data?.body || "";
             setBBCode(body);
+            setOriginalBBCode(body);
             if (onChange) onChange(body);
           }
         })
@@ -62,7 +64,11 @@ const Edit = ({ title, contentKey, value, onChange }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentKey]);
 
-  const handleEditClick = () => setIsEditing(true);
+  const handleEditClick = () => {
+    setOriginalBBCode(bbcode);
+    setIsEditing(true);
+  };
+
   const handleSaveClick = async () => {
     setIsEditing(false);
     if (contentKey) {
@@ -75,6 +81,17 @@ const Edit = ({ title, contentKey, value, onChange }) => {
     if (onChange) onChange(bbcode);
     setShowSaved(true);
     setTimeout(() => setShowSaved(false), 2000);
+  };
+
+  const handleCancelClick = () => {
+    if (bbcode !== originalBBCode) {
+      if (window.confirm("Haluatko varmasti hylätä muutokset?")) {
+        setBBCode(originalBBCode);
+        setIsEditing(false);
+      }
+    } else {
+      setIsEditing(false);
+    }
   };
 
   // Lisää tägin
@@ -134,6 +151,7 @@ const Edit = ({ title, contentKey, value, onChange }) => {
               style={{ width: "100%" }}
             />
             <button className="save-button" onClick={handleSaveClick}>Tallenna</button>
+            <button className="cancel-button" onClick={handleCancelClick}>Peruuta</button>
             <div className="esikatselu">
               <strong>Esikatselu:</strong>
               <div dangerouslySetInnerHTML={{ __html: parseBBCode(bbcode) }} />
